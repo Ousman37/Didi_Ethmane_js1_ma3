@@ -1,39 +1,40 @@
 //function getRemainder(a, b) {
 //  return a % b;
 //}
+// Question 1. Expecting 3
 
-let getRemainder = (a, b) => "${a} -${b}";
+const getRemainder = (a, b) => a % b;
 
-//console.log();
-getRemainder();
+console.log(getRemainder(21, 9));
 
-///const url = "https://rawg.io/games";
+//Question 2
 
-const url = "https://noroffcors.herokuapp.com/";
+const apiKey = "d9026239a5414beba58c930af1adbfed";
+const apiUrl = `https://api.rawg.io/api/games?dates=2019-01-01,2019-12-31&ordering=-rating&key=${apiKey}`;
 
 const resultsContainer = document.querySelector(".results");
 
-//async function getData() {
-//  // fetch !! d9026239a5414beba58c930af1adbfed
-//  try {
-//    const response = await fetch("d9026239a5414beba58c930af1adbfed");
-//    const name = await response.json();
-//    resultsContainer.innerHTML = "";
-//    for (let i = 0; i < name.length; i++) {
-//      console.log(name[i].text);
-//      if (i === 8) {
-//        break;
-//      }
-//      resultsContainer.innerHTML += `<div class="result">${name[i].text}</div>`;
-//    }
-//  } catch (error) {
-//    console.log("An error occurred");
-//    resultsContainer.innerHTML = displayError(
-//      "An error occurred when calling the API"
-//    );
-//  }
-//
-//  //console.log(results);
-//}
-//getData();
-//
+async function getData() {
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const results = data.results;
+
+    resultsContainer.innerHTML = "";
+    console.log(data);
+    //console.log(data.results[0].stores[0].store.name);
+    for (let i = 0; i < 8; i++) {
+      resultsContainer.innerHTML += `<div class="result">Name: ${results[i].name}</div>`;
+      resultsContainer.innerHTML += `<div class="result">Rating: ${results[i].rating}</div>`;
+      resultsContainer.innerHTML += `<div class="result">Number of tags: ${results[i].tags.length}</div>`;
+    }
+  } catch (error) {
+    console.log("An error occurred");
+    resultsContainer.innerHTML = displayError(
+      "An error occurred when calling the API"
+    );
+  }
+
+  //console.log(results);
+}
+getData();
